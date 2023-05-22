@@ -1,4 +1,7 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Elemento;
@@ -110,8 +113,13 @@ public class Tabla extends javax.swing.JFrame {
         jLabel6.setText("Color");
 
         bttnCancelar.setText("Cancelar");
+        bttnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttnCancelarMouseClicked(evt);
+            }
+        });
 
-        bttnAceptar.setText("Aceptar");
+        bttnAceptar.setText("Añadir");
         bttnAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bttnAceptarMouseClicked(evt);
@@ -134,6 +142,11 @@ public class Tabla extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblPeriodica);
 
         bttnEliminar.setText("Eliminar");
+        bttnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttnEliminarMouseClicked(evt);
+            }
+        });
 
         bttnActualizar.setText("Actualizar");
         bttnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,6 +161,11 @@ public class Tabla extends javax.swing.JFrame {
         });
 
         bttnExportar.setText("Exportar");
+        bttnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnExportarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -299,6 +317,41 @@ public class Tabla extends javax.swing.JFrame {
         setDatos();
         limpiarCampos();
     }//GEN-LAST:event_bttnAceptarMouseClicked
+
+    private void bttnCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttnCancelarMouseClicked
+        // TODO add your handling code here:
+        limpiarCampos();
+    }//GEN-LAST:event_bttnCancelarMouseClicked
+
+    private void bttnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttnEliminarMouseClicked
+        // TODO add your handling code here:
+        int filaActual = tblPeriodica.getSelectedRow();
+        System.out.println(tblPeriodica.getSelectionModel().getClass());
+        if (filaActual != -1){
+            System.out.println(filaActual);
+            //dtmMunicipios.removeRow(filaActual);
+            System.out.println(elementos);
+            Elemento.eliminarElemento(filaActual);
+            setDatos();
+
+        }
+    }//GEN-LAST:event_bttnEliminarMouseClicked
+
+    private void bttnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnExportarActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Inicio guardar archivo");
+        File archivo = new File("C:\\Users\\sebax\\Documents\\Prueba\\tblPeriodica.txt");
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(archivo);
+            for(Elemento Elemento : elementos){
+            escribir.print(Elemento.toString()+"\n");
+            }
+            escribir.close();
+        }   catch (FileNotFoundException ex){
+                java.util.logging.Logger.getLogger(Tabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_bttnExportarActionPerformed
 
     /**
      * @param args the command line arguments
